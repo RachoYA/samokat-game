@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { authAPI } from '../services/api';
 import './AuthScreen.css';
+import './AuthScreen-mobile.css';
 
 function AuthScreen({ onLogin }) {
     const [username, setUsername] = useState('');

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Game3D from './Game3D';
 import { sessionsAPI, missionsAPI } from '../services/api';
 import './GameScreen.css';
+import './GameScreen-mobile.css';
 
 function GameScreen({ user, onLogout }) {
     const [missions, setMissions] = useState([]);

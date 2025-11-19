@@ -1,0 +1,277 @@
+/* ============================================================================
+   📱 МОБИЛЬНАЯ АДАПТАЦИЯ
+   ============================================================================ */
+
+/* Tablets and small desktops */
+@media (max-width: 1024px) {
+    .game-ui {
+        padding: 15px;
+    }
+    
+    .stats-panel {
+        gap: 10px;
+    }
+    
+    .stat-item {
+        min-width: 80px;
+        padding: 10px 15px;
+    }
+    
+    .missions-panel {
+        max-width: 280px;
+    }
+    
+    .building-cards {
+        gap: 10px;
+    }
+    
+    .card {
+        width: 110px !important;
+        height: 140px !important;
+    }
+}
+
+/* Mobile devices (portrait and landscape) */
+@media (max-width: 768px) {
+    .game-ui {
+        padding: 10px !important;
+    }
+    
+    .game3d-container {
+        height: calc(100vh - 55px) !important;
+    }
+    
+    /* Компактная панель статистики */
+    .stats-panel {
+        flex-wrap: wrap;
+        gap: 8px !important;
+    }
+    
+    .stat-item {
+        min-width: 70px !important;
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+    
+    .stat-label {
+        font-size: 11px !important;
+    }
+    
+    .stat-value {
+        font-size: 16px !important;
+    }
+    
+    /* Панель миссий справа, компактная */
+    .missions-panel {
+        max-width: 250px !important;
+        max-height: 60vh !important;
+        padding: 12px !important;
+    }
+    
+    .missions-header h3 {
+        font-size: 16px !important;
+    }
+    
+    .mission-item {
+        padding: 10px !important;
+        font-size: 13px !important;
+    }
+    
+    .mission-reward {
+        font-size: 12px !important;
+    }
+    
+    /* Карточки зданий - горизонтальный скролл */
+    .building-cards {
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        gap: 8px !important;
+        padding-bottom: 5px !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+    
+    .card {
+        flex-shrink: 0 !important;
+        width: 100px !important;
+        height: 130px !important;
+        font-size: 12px !important;
+    }
+    
+    .card-name {
+        font-size: 13px !important;
+        padding: 6px !important;
+    }
+    
+    .card-desc {
+        font-size: 10px !important;
+        padding: 0 6px 6px !important;
+    }
+    
+    .controls-hint {
+        font-size: 12px !important;
+        padding: 8px 16px !important;
+        bottom: 10px !important;
+    }
+    
+    /* Кнопка сворачивания миссий */
+    .toggle-missions-btn {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 18px !important;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .game-ui {
+        padding: 8px !important;
+    }
+    
+    /* Очень компактная статистика */
+    .stats-panel {
+        gap: 6px !important;
+    }
+    
+    .stat-item {
+        min-width: 60px !important;
+        padding: 6px 10px !important;
+    }
+    
+    .stat-label {
+        font-size: 10px !important;
+    }
+    
+    .stat-value {
+        font-size: 14px !important;
+    }
+    
+    .stat-icon {
+        font-size: 14px !important;
+    }
+    
+    /* Панель миссий на весь экран при открытии */
+    .missions-panel {
+        max-width: calc(100vw - 20px) !important;
+        max-height: 50vh !important;
+        padding: 10px !important;
+    }
+    
+    .missions-panel.collapsed {
+        max-width: 180px !important;
+    }
+    
+    .missions-header h3 {
+        font-size: 14px !important;
+    }
+    
+    .mission-item {
+        padding: 8px !important;
+        font-size: 12px !important;
+    }
+    
+    .mission-reward {
+        font-size: 11px !important;
+    }
+    
+    /* Карточки зданий */
+    .building-cards {
+        gap: 6px !important;
+    }
+    
+    .card {
+        width: 90px !important;
+        height: 120px !important;
+    }
+    
+    .card-name {
+        font-size: 12px !important;
+        padding: 5px !important;
+    }
+    
+    .card-desc {
+        font-size: 9px !important;
+        padding: 0 5px 5px !important;
+    }
+    
+    .card-cost {
+        font-size: 10px !important;
+        padding: 4px 8px !important;
+    }
+    
+    .controls-hint {
+        display: none !important; /* Скрываем на маленьких экранах */
+    }
+}
+
+/* Landscape mode on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .game-ui {
+        padding: 5px !important;
+    }
+    
+    .stats-panel {
+        gap: 5px !important;
+    }
+    
+    .stat-item {
+        min-width: 50px !important;
+        padding: 5px 8px !important;
+    }
+    
+    .stat-label {
+        display: none !important; /* Скрываем метки в ландшафте */
+    }
+    
+    .missions-panel {
+        max-height: calc(100vh - 20px) !important;
+        max-width: 200px !important;
+    }
+    
+    .building-cards {
+        gap: 5px !important;
+    }
+    
+    .card {
+        width: 80px !important;
+        height: 110px !important;
+    }
+    
+    .controls-hint {
+        display: none !important;
+    }
+}
+
+/* Touch-friendly styles */
+@media (hover: none) and (pointer: coarse) {
+    /* Увеличиваем области нажатия для touch */
+    .card {
+        min-height: 130px !important;
+    }
+    
+    .toggle-missions-btn {
+        min-width: 44px !important;
+        min-height: 44px !important;
+    }
+    
+    .mission-item {
+        min-height: 44px !important;
+    }
+    
+    /* Убираем hover эффекты */
+    .card:hover,
+    .toggle-missions-btn:hover {
+        transform: none !important;
+    }
+    
+    /* Активное состояние для touch */
+    .card:active {
+        transform: scale(0.95) !important;
+    }
+    
+    .toggle-missions-btn:active {
+        transform: scale(0.9) !important;
+    }
+}
+

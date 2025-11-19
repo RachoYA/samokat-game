@@ -1,0 +1,79 @@
+/* ============================================================================
+   📱 МОБИЛЬНАЯ АДАПТАЦИЯ - Экран авторизации
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .auth-screen {
+        padding: 15px !important;
+    }
+    
+    .auth-container {
+        max-width: 100% !important;
+        margin: 20px !important;
+        padding: 25px !important;
+    }
+    
+    .auth-header h1 {
+        font-size: 28px !important;
+    }
+    
+    .auth-header p {
+        font-size: 14px !important;
+    }
+    
+    .form-group label {
+        font-size: 13px !important;
+    }
+    
+    .form-group input {
+        font-size: 15px !important;
+        padding: 12px !important;
+    }
+    
+    .auth-button {
+        font-size: 15px !important;
+        padding: 14px !important;
+    }
+    
+    .auth-switch {
+        font-size: 13px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-screen {
+        padding: 10px !important;
+    }
+    
+    .auth-container {
+        margin: 10px !important;
+        padding: 20px !important;
+    }
+    
+    .auth-header h1 {
+        font-size: 24px !important;
+    }
+    
+    .auth-header p {
+        font-size: 13px !important;
+    }
+    
+    .form-group {
+        margin-bottom: 15px !important;
+    }
+    
+    .form-group input {
+        font-size: 14px !important;
+        padding: 10px !important;
+    }
+    
+    .auth-button {
+        font-size: 14px !important;
+        padding: 12px !important;
+    }
+    
+    .auth-switch {
+        font-size: 12px !important;
+    }
+}
+

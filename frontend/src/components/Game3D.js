@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as BABYLON from '@babylonjs/core';
 import { Game3D as GameEngine, BuildingTypes } from '../game-engine';
 import './Game3D.css';
+import './Game3D-mobile.css';
 
 function Game3D({ user, missions, onGameEnd }) {
     const canvasRef = useRef(null);

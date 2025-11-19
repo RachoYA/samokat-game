@@ -150,6 +150,21 @@ class Game3D {
         );
         this.camera.attachControl(this.canvas, true);
         
+        // ============================================================================
+        // 📱 МОБИЛЬНАЯ АДАПТАЦИЯ - Touch Controls
+        // ============================================================================
+        
+        // Улучшенные настройки для touch-устройств
+        this.camera.panningSensibility = 50; // Чувствительность панорамирования
+        this.camera.angularSensibilityX = 2000; // Чувствительность вращения по X (уменьшаем для плавности)
+        this.camera.angularSensibilityY = 2000; // Чувствительность вращения по Y
+        this.camera.pinchPrecision = 100; // Точность pinch-zoom на мобильных
+        this.camera.pinchDeltaPercentage = 0.01; // Процент изменения при pinch
+        
+        // Инерция для более плавного управления на touch
+        this.camera.inertia = 0.9;
+        this.camera.panningInertia = 0.9;
+        
         // Ограничения для камеры (адаптивные)
         this.camera.lowerRadiusLimit = cameraRadius * 0.3;
         this.camera.upperRadiusLimit = cameraRadius * 2.5;
