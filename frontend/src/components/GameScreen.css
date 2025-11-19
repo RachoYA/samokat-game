@@ -1,0 +1,78 @@
+.game-screen {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+}
+
+body.night-mode .game-screen {
+    background: #0f1419;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8FFFA 100%);
+    box-shadow: 0 4px 20px rgba(0, 213, 99, 0.15);
+    border-bottom: 2px solid rgba(0, 213, 99, 0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+body.night-mode .game-header {
+    background: linear-gradient(135deg, #1a1f2e 0%, #252b3d 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid rgba(100, 150, 255, 0.3);
+}
+
+.user-info {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.user-name {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #00D563;
+    transition: color 0.3s ease;
+}
+
+body.night-mode .user-name {
+    color: #60d5c8;
+}
+
+.user-stats {
+    font-size: 0.95em;
+    color: #666;
+    background: rgba(0, 213, 99, 0.1);
+    padding: 8px 15px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+body.night-mode .user-stats {
+    color: #9ca3af;
+    background: rgba(100, 150, 255, 0.15);
+}
+
+.btn-logout {
+    padding: 10px 20px;
+    background: transparent;
+    color: #999;
+    border: 2px solid rgba(0, 213, 99, 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: rgba(255, 0, 0, 0.05);
+    border-color: #FF5252;
+    color: #FF5252;
+}
+

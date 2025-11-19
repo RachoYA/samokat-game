@@ -1,0 +1,104 @@
+#!/usr/bin/expect -f
+# Expect скрипт для автоматической настройки сервера
+
+set timeout 300
+set server_ip "89.232.184.218"
+set server_user "racho"
+set server_password "cv7AE5HpRC"
+
+puts "🔧 Подключение к серверу для настройки..."
+puts "Сервер: $server_user@$server_ip"
+puts ""
+
+spawn ssh -o StrictHostKeyChecking=no $server_user@$server_ip
+
+expect {
+    "password:" {
+        send "$server_password\r"
+        exp_continue
+    }
+    "$ " {
+        # Отправляем команды настройки
+        puts "📦 Начинаем установку компонентов..."
+        
+        # Проверка Node.js
+        send "command -v node && node -v || echo 'NO_NODE'\r"
+        expect "$ "
+        
+        # Установка Node.js если нужно
+        send "if ! command -v node &> /dev/null; then curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && sudo apt install -y nodejs; fi\r"
+        expect {
+            "password" {
+                send "$server_password\r"
+                exp_continue
+            }
+            "$ " {}
+        }
+        
+        # Обновление системы
+        send "sudo apt update && sudo apt upgrade -y\r"
+        expect {
+            "password" {
+                send "$server_password\r"
+                exp_continue
+            }
+            "$ " {}
+        }
+        
+        # Установка Nginx
+        send "sudo apt install -y nginx\r"
+        expect {
+            "password" {
+                send "$server_password\r"
+                exp_continue
+            }
+            "$ " {}
+        }
+        
+        # Установка PM2
+        send "sudo npm install -g pm2\r"
+        expect "$ "
+        
+        # Создание директорий
+        send "sudo mkdir -p /var/www/samokat-game && sudo chown -R $server_user:$server_user /var/www/samokat-game\r"
+        expect {
+            "password" {
+                send "$server_password\r"
+                exp_continue
+            }
+            "$ " {}
+        }
+        
+        send "mkdir -p /var/www/samokat-game/\{backend,frontend,logs,deployment\}\r"
+        expect "$ "
+        
+        # Firewall
+        send "echo 'y' | sudo ufw allow 22/tcp && sudo ufw allow 80/tcp && sudo ufw allow 443/tcp && sudo ufw enable\r"
+        expect {
+            "password" {
+                send "$server_password\r"
+                exp_continue
+            }
+            "$ " {}
+        }
+        
+        # PM2 startup
+        send "pm2 startup\r"
+        expect "$ "
+        
+        puts "\n✅ Настройка завершена!"
+        
+        send "exit\r"
+    }
+    timeout {
+        puts "❌ Таймаут подключения"
+        exit 1
+    }
+    eof {
+        puts "❌ Соединение прервано"
+        exit 1
+    }
+}
+
+expect eof
+

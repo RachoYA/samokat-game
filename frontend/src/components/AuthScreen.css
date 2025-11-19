@@ -1,0 +1,128 @@
+.auth-screen {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #E3F5FF 0%, #F0FFF4 50%, #D4F4DD 100%);
+}
+
+.auth-content {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8FFFA 100%);
+    border-radius: 30px;
+    padding: 50px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 213, 99, 0.2);
+    border: 3px solid rgba(0, 213, 99, 0.3);
+}
+
+.auth-logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.auth-logo h1 {
+    font-size: 3em;
+    background: linear-gradient(135deg, #00D563 0%, #4CAF50 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    font-weight: 900;
+}
+
+.auth-logo p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+.auth-box {
+    margin-bottom: 30px;
+}
+
+.auth-box h2 {
+    color: #00D563;
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    border: 2px solid rgba(0, 213, 99, 0.3);
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #00D563;
+    box-shadow: 0 0 0 3px rgba(0, 213, 99, 0.1);
+}
+
+.error-message {
+    background: #FFE5E5;
+    color: #D32F2F;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    border: 2px solid #FFCDD2;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #00D563 0%, #00B851 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 213, 99, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 213, 99, 0.4);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-switch {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: transparent;
+    color: #00D563;
+    border: 2px dashed rgba(0, 213, 99, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: all 0.3s ease;
+}
+
+.btn-switch:hover {
+    background: rgba(0, 213, 99, 0.05);
+    border-color: #00D563;
+}
+
+.auth-footer {
+    text-align: center;
+    color: #999;
+    font-size: 0.9em;
+}
+
+

@@ -1,0 +1,100 @@
+// ===========================
+// 3D МИКРОРАЙОН - BABYLON.JS
+// ===========================
+
+// Типы зданий с 3D параметрами
+const BuildingTypes = {
+    house: {
+        id: 'house',
+        name: 'Дом',
+        icon: '🏠',
+        desc: '+1 за парк, -1 за склад',
+        color: new BABYLON.Color3(0.9, 0.7, 0.4), // Бежевый
+        emissive: new BABYLON.Color3(0.2, 0.15, 0.1),
+        height: 3
+    },
+    park: {
+        id: 'park',
+        name: 'Парк',
+        icon: '🌳',
+        desc: '+1 за дом, +1 за кафе',
+        color: new BABYLON.Color3(0.2, 0.8, 0.3), // Зелёный
+        emissive: new BABYLON.Color3(0.05, 0.2, 0.08),
+        height: 0.5
+    },
+    cafe: {
+        id: 'cafe',
+        name: 'Кафе',
+        icon: '☕',
+        desc: '+1 за дом, +2 за парк',
+        color: new BABYLON.Color3(0.8, 0.4, 0.2), // Коричневый
+        emissive: new BABYLON.Color3(0.3, 0.15, 0.05),
+        height: 2
+    },
+    shop: {
+        id: 'shop',
+        name: 'Магазин',
+        icon: '🛒',
+        desc: '+2 за 3+ домов рядом',
+        color: new BABYLON.Color3(0.3, 0.5, 0.9), // Синий
+        emissive: new BABYLON.Color3(0.1, 0.15, 0.3),
+        height: 2.5
+    },
+    delivery: {
+        id: 'delivery',
+        name: 'Доставка',
+        icon: '📦',
+        desc: '+3 за 3 дома + магазин',
+        color: new BABYLON.Color3(0, 0.84, 0.39), // Самокат зелёный
+        emissive: new BABYLON.Color3(0, 0.3, 0.15),
+        height: 2,
+        glow: true
+    },
+    warehouse: {
+        id: 'warehouse',
+        name: 'Склад',
+        icon: '🏭',
+        desc: '+2 за магазины, -1 домам',
+        color: new BABYLON.Color3(0.5, 0.5, 0.5), // Серый
+        emissive: new BABYLON.Color3(0.1, 0.1, 0.1),
+        height: 3.5
+    },
+    office: {
+        id: 'office',
+        name: 'Офис',
+        icon: '🏢',
+        desc: '+1 за кафе и доставку',
+        color: new BABYLON.Color3(0.4, 0.25, 0.6), // Фиолетовый
+        emissive: new BABYLON.Color3(0.15, 0.1, 0.2),
+        height: 4
+    }
+};
+
+// Миссии
+const MissionTemplates = [
+    {
+        id: 'houses_5',
+        desc: 'Постройте 5 домов',
+        check: (game) => game.countBuildingType('house') >= 5,
+        reward: 50
+    },
+    {
+        id: 'park_cluster',
+        desc: 'Создайте парковую зону (3 парка рядом)',
+        check: (game) => game.checkParkCluster(),
+        reward: 75
+    },
+    {
+        id: 'delivery_center',
+        desc: 'Постройте центр доставки (Доставка + 3 дома + магазин рядом)',
+        check: (game) => game.checkDeliveryCenter(),
+        reward: 100
+    },
+    {
+        id: 'cafe_combo',
+        desc: 'Кафе окружённое 2 домами и парком',
+        check: (game) => game.checkCafeCombo(),
+        reward: 80
+    },
+    {
+        id: 'office_hub',
