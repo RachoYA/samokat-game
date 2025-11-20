@@ -688,24 +688,83 @@ class Game2D {
 
     recalculateScores() {
         let totalScore = 0;
+        
         this.gridSystem.buildings.forEach(b => {
-            // Reuse logic from Game3D but simplified or copied
-            // For brevity, basic scoring here, ideally extract scoring logic to a shared helper
-            let score = 1;
+            let score = 1; // Базовое очко
             const neighbors = this.gridSystem.getNeighbors(b.x, b.y);
+            const nearby = this.gridSystem.getNearby(b.x, b.y, 2);
+            const farNearby = this.gridSystem.getNearby(b.x, b.y, 3);
 
-            // Simple example logic matching 3D
+            // 🏠 ДОМ
             if (b.type === 'house') {
                 neighbors.forEach(n => {
-                    if (n.type === 'park') score++;
-                    if (n.type === 'warehouse') score--;
+                    if (n.type === 'park') score++; // +1 за парк
+                    if (n.type === 'warehouse') score--; // -1 за склад (шумно)
                 });
             }
-            // ... add other rules ...
+            
+            // 🌳 ПАРК
+            else if (b.type === 'park') {
+                neighbors.forEach(n => {
+                    if (n.type === 'house') score++; // +1 за дом
+                    if (n.type === 'cafe') score++; // +1 за кафе
+                });
+            }
+            
+            // ☕ КАФЕ
+            else if (b.type === 'cafe') {
+                neighbors.forEach(n => {
+                    if (n.type === 'house') score++; // +1 за дом
+                    if (n.type === 'park') score += 2; // +2 за парк (сильный кластер)
+                });
+            }
+            
+            // 🛒 МАГАЗИН
+            else if (b.type === 'shop') {
+                const housesNearby = nearby.filter(n => n.type === 'house').length;
+                score += housesNearby * 2; // +2 за каждый дом в радиусе 2
+                
+                // Перенасыщение: если ≥3 магазинов рядом
+                const shopsNearby = nearby.filter(n => n.type === 'shop').length;
+                if (shopsNearby >= 3) {
+                    score = Math.max(1, Math.floor(score / 2)); // Штраф за перенасыщение
+                }
+            }
+            
+            // 📦 ПУНКТ СЕРВИСА/ДОСТАВКИ
+            else if (b.type === 'delivery') {
+                const housesInRadius = farNearby.filter(n => n.type === 'house').length;
+                const shopsOrCafes = farNearby.filter(n => n.type === 'shop' || n.type === 'cafe').length;
+                
+                // +3 если минимум 3 дома И минимум 1 магазин/кафе в радиусе 3
+                if (housesInRadius >= 3 && shopsOrCafes >= 1) {
+                    score += 3;
+                }
+            }
+            
+            // 🏭 СКЛАД
+            else if (b.type === 'warehouse') {
+                const shopsNearby = nearby.filter(n => n.type === 'shop').length;
+                const deliveryNearby = nearby.filter(n => n.type === 'delivery').length;
+                
+                score += shopsNearby * 2; // +2 за магазин
+                score += deliveryNearby * 2; // +2 за пункт доставки
+                
+                // Штраф домам вокруг (уже учтено в логике дома)
+            }
+            
+            // 🏢 ОФИС
+            else if (b.type === 'office') {
+                neighbors.forEach(n => {
+                    if (n.type === 'cafe') score++; // +1 за кафе
+                    if (n.type === 'delivery') score++; // +1 за пункт доставки
+                });
+            }
 
-            b.score = score;
-            totalScore += score;
+            b.score = Math.max(0, score); // Минимум 0 очков
+            totalScore += b.score;
         });
+        
         this.score = totalScore;
     }
 
