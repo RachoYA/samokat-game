@@ -78,3 +78,4 @@ npm run build     — Собрать production версию
 Powered by Babylon.js • React • Node.js • Самокат 2025 🛴
 
 
+

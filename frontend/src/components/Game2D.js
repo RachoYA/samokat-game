@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as BABYLON from '@babylonjs/core';
-import { Game3D as GameEngine, BuildingTypes } from '../game-engine';
-import './Game3D.css';
-import './Game3D-mobile.css';
+import { Game2D as GameEngine } from '../game-engine-2d';
+import { BuildingTypes } from '../config/buildings';
+import './Game2D.css';
 
-function Game3D({ user, missions, onGameEnd }) {
+function Game2D({ user, missions, onGameEnd }) {
     const canvasRef = useRef(null);
     const gameRef = useRef(null);
     const [gameState, setGameState] = useState({
@@ -13,26 +12,21 @@ function Game3D({ user, missions, onGameEnd }) {
         highScore: 0,
         currentCards: [],
         selectedCard: null,
-        completedMissions: []
+        completedMissions: [],
+        loading: true
     });
 
     const [missionsCollapsed, setMissionsCollapsed] = useState(false);
 
     useEffect(() => {
-        if (!canvasRef.current) {
-            console.error('Canvas ref not found');
-            return;
-        }
+        if (!canvasRef.current) return;
 
-        console.log('Initializing game engine...');
+        console.log('Initializing 2D game engine...');
 
         try {
-            // Создаем игровой движок с передачей canvas
             const game = new GameEngine(canvasRef.current);
             gameRef.current = game;
-            console.log('Game engine created successfully');
 
-            // Подписываемся на обновления состояния
             const updateInterval = setInterval(() => {
                 if (game) {
                     setGameState({
@@ -41,54 +35,70 @@ function Game3D({ user, missions, onGameEnd }) {
                         highScore: game.highScore,
                         currentCards: game.currentCards,
                         selectedCard: game.selectedCard,
-                        completedMissions: Array.from(game.missionSystem.completedMissions)
+                        completedMissions: Array.from(game.missionSystem.completedMissions),
+                        loading: game.isLoading
                     });
                 }
             }, 100);
 
-            // Переопределяем метод endGame для интеграции с React
+            // Override endGame
             const originalEndGame = game.endGame.bind(game);
             game.endGame = async function () {
                 const missionsCompleted = this.missionSystem.completedMissions.size;
-
-                // Сохраняем через callback
                 if (onGameEnd) {
                     await onGameEnd(this.score, this.moves, missionsCompleted);
                 }
-
-                // Вызываем оригинальный метод
                 await originalEndGame();
             };
 
-            console.log('Game3D engine initialized');
-
             return () => {
                 clearInterval(updateInterval);
-                if (game && game.engine) {
-                    game.engine.dispose();
+                if (game) {
+                    game.isRunning = false;
                 }
             };
         } catch (error) {
-            console.error('Error initializing game:', error);
+            console.error('Error initializing 2D game:', error);
         }
     }, [onGameEnd]);
-
 
     const handleCardClick = (cardType) => {
         if (gameRef.current) {
             gameRef.current.selectedCard = cardType;
-            gameRef.current.renderCards();
+            // Force update to show selection in UI immediately if needed
+            setGameState(prev => ({ ...prev, selectedCard: cardType }));
         }
     };
 
     return (
-        <div className="game3d-container">
-            {/* Canvas для Babylon.js */}
-            <canvas ref={canvasRef} id="renderCanvas" className="game3d-canvas" />
+        <div className="game3d-container" style={{ background: '#87CEFA' }}>
+            <canvas
+                ref={canvasRef}
+                className="game3d-canvas"
+                style={{ width: '100%', height: '100%', touchAction: 'none' }}
+            />
 
-            {/* UI Overlay */}
+            {gameState.loading && (
+                <div className="loading-overlay" style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'rgba(0,0,0,0.7)',
+                    color: 'white',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000,
+                    fontSize: '24px'
+                }}>
+                    Loading Assets...
+                </div>
+            )}
+
+            {/* UI Overlay (Reused) */}
             <div className="game-ui">
-                {/* Статистика */}
                 <div className="stats-panel">
                     <div className="stat-item">
                         <div className="stat-label">Очки</div>
@@ -96,7 +106,7 @@ function Game3D({ user, missions, onGameEnd }) {
                     </div>
                     <div className="stat-item">
                         <div className="stat-label">Ход</div>
-                        <div className="stat-value">{gameState.moves}/64</div>
+                        <div className="stat-value">{gameState.moves}/{gameRef.current?.maxMoves || 64}</div>
                     </div>
                     <div className="stat-item">
                         <div className="stat-label">Рекорд</div>
@@ -104,14 +114,12 @@ function Game3D({ user, missions, onGameEnd }) {
                     </div>
                 </div>
 
-                {/* Миссии (сворачиваемая панель) */}
                 <div className={`missions-panel ${missionsCollapsed ? 'collapsed' : ''}`}>
                     <div className="missions-header">
                         <h3>🎯 Задания</h3>
                         <button
                             className="btn-collapse"
                             onClick={() => setMissionsCollapsed(!missionsCollapsed)}
-                            title={missionsCollapsed ? 'Развернуть' : 'Свернуть'}
                         >
                             {missionsCollapsed ? '◀' : '▶'}
                         </button>
@@ -119,10 +127,7 @@ function Game3D({ user, missions, onGameEnd }) {
                     {!missionsCollapsed && missions.map((mission) => {
                         const isCompleted = gameState.completedMissions.includes(mission.id);
                         return (
-                            <div
-                                key={mission.id}
-                                className={`mission-item ${isCompleted ? 'completed' : ''}`}
-                            >
+                            <div key={mission.id} className={`mission-item ${isCompleted ? 'completed' : ''}`}>
                                 <div className="mission-desc">
                                     {isCompleted ? '✅' : '⬜'} {mission.description}
                                 </div>
@@ -132,13 +137,11 @@ function Game3D({ user, missions, onGameEnd }) {
                     })}
                 </div>
 
-                {/* Карточки зданий */}
                 <div className="cards-panel">
                     <div className="cards-container">
                         {gameState.currentCards.map((cardType, index) => {
                             const type = BuildingTypes[cardType];
                             const isSelected = gameState.selectedCard === cardType;
-
                             return (
                                 <div
                                     key={index}
@@ -154,13 +157,12 @@ function Game3D({ user, missions, onGameEnd }) {
                     </div>
                 </div>
 
-                {/* Подсказка и переключатель */}
                 <div className="bottom-left-panel">
                     <div className="controls-hint">
-                        <h4>🎮 Управление</h4>
-                        <p>🖱️ ЛКМ - вращение камеры</p>
+                        <h4>🎮 2D Режим</h4>
+                        <p>🖱️ Драг - перемещение</p>
                         <p>🔍 Колесо - зум</p>
-                        <p>👆 Клик по клетке - разместить здание</p>
+                        <p>👆 Клик - строить</p>
                     </div>
                 </div>
             </div>
@@ -168,4 +170,4 @@ function Game3D({ user, missions, onGameEnd }) {
     );
 }
 
-export default Game3D;
+export default Game2D;

@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
     credentials: true
 }));
 app.use(express.json());
@@ -31,8 +31,8 @@ app.use('/api/missions', require('./routes/missions'));
 
 // Здоровье сервера
 app.get('/api/health', (req, res) => {
-    res.json({ 
-        status: 'OK', 
+    res.json({
+        status: 'OK',
         message: 'Samokat Microraion API v3.0',
         timestamp: new Date().toISOString()
     });
@@ -41,7 +41,7 @@ app.get('/api/health', (req, res) => {
 // Обработка ошибок
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ 
+    res.status(500).json({
         error: 'Что-то пошло не так!',
         message: process.env.NODE_ENV === 'development' ? err.message : undefined
     });

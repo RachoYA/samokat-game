@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Game3D from './Game3D';
+import Game2D from './Game2D';
 import { sessionsAPI, missionsAPI } from '../services/api';
 import './GameScreen.css';
 import './GameScreen-mobile.css';
@@ -27,12 +27,12 @@ function GameScreen({ user, onLogout }) {
         try {
             const response = await sessionsAPI.create(score, moves, missionsCompleted);
             console.log('Session saved:', response);
-            
+
             // Обновляем данные пользователя в localStorage
             if (response.user) {
                 localStorage.setItem('user', JSON.stringify(response.user));
             }
-            
+
             return response;
         } catch (error) {
             console.error('Error saving session:', error);
@@ -61,8 +61,8 @@ function GameScreen({ user, onLogout }) {
                 </button>
             </div>
 
-            <Game3D 
-                user={user} 
+            <Game2D
+                user={user}
                 missions={missions}
                 onGameEnd={handleGameEnd}
             />

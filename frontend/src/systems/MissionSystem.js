@@ -10,13 +10,17 @@ import { MissionTemplates } from '../config/missions';
 export class MissionSystem {
     constructor(onMissionCompleteCallback) {
         this.onMissionCompleteCallback = onMissionCompleteCallback;
-        
+
         this.missions = [];
         this.completedMissions = new Set();
-        
+
+        // Bind methods to ensure 'this' context is preserved
+        this.checkMissions = this.checkMissions.bind(this);
+        this.checkMission = this.checkMission.bind(this);
+
         this.generateMissions();
     }
-    
+
     /**
      * Генерирует 3 случайные миссии
      */
@@ -26,23 +30,28 @@ export class MissionSystem {
         this.missions = shuffled.slice(0, 3);
         console.log('MissionSystem: Generated missions:', this.missions);
     }
-    
+
     /**
      * Проверяет все активные миссии
      */
     checkMissions(game) {
         let anyCompleted = false;
-        
+
+        // Ensure completedMissions is initialized
+        if (!this.completedMissions) {
+            this.completedMissions = new Set();
+        }
+
         this.missions.forEach(mission => {
             if (!this.completedMissions.has(mission.id)) {
                 const isCompleted = this.checkMission(mission, game);
-                
+
                 if (isCompleted) {
                     this.completedMissions.add(mission.id);
                     anyCompleted = true;
-                    
+
                     console.log(`Mission completed: ${mission.desc}`);
-                    
+
                     // Вызываем callback
                     if (this.onMissionCompleteCallback) {
                         this.onMissionCompleteCallback(mission);
@@ -50,41 +59,41 @@ export class MissionSystem {
                 }
             }
         });
-        
+
         return anyCompleted;
     }
-    
+
     /**
      * Проверяет одну миссию
      */
     checkMission(mission, game) {
         const gridSystem = game.gridSystem;
-        
+
         switch (mission.checkFunc) {
             case 'countBuildingType':
                 return gridSystem.countBuildingType(mission.checkParams.type) >= mission.checkParams.count;
-                
+
             case 'checkParkCluster':
                 return this.checkParkCluster(gridSystem);
-                
+
             case 'checkDeliveryCenter':
                 return this.checkDeliveryCenter(gridSystem);
-                
+
             case 'checkCafeCombo':
                 return this.checkCafeCombo(gridSystem);
-                
+
             case 'checkOfficeHub':
                 return this.checkOfficeHub(gridSystem);
-                
+
             case 'checkWarehouseLogistics':
                 return this.checkWarehouseLogistics(gridSystem);
-                
+
             default:
                 console.warn(`Unknown mission check function: ${mission.checkFunc}`);
                 return false;
         }
     }
-    
+
     /**
      * Проверяет наличие парковой зоны (3 парка рядом)
      */
@@ -100,7 +109,7 @@ export class MissionSystem {
         }
         return false;
     }
-    
+
     /**
      * Проверяет наличие центра доставки
      */
@@ -117,7 +126,7 @@ export class MissionSystem {
         }
         return false;
     }
-    
+
     /**
      * Проверяет комбинацию кафе
      */
@@ -134,7 +143,7 @@ export class MissionSystem {
         }
         return false;
     }
-    
+
     /**
      * Проверяет бизнес-центр
      */
@@ -151,7 +160,7 @@ export class MissionSystem {
         }
         return false;
     }
-    
+
     /**
      * Проверяет логистический центр
      */

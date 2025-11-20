@@ -77,3 +77,4 @@ echo "   sudo systemctl status nginx"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+

@@ -1,7 +1,7 @@
 // Игровые константы
 
-export const GRID_SIZE = 16; // Размер игровой сетки (16x16)
-export const CELL_SIZE = 2.5; // Размер одной клетки в 3D мире
+export const GRID_SIZE = 20; // Размер игровой сетки (20x20)
+export const CELL_SIZE = 60; // Размер одной клетки в пикселях
 
 // Настройки игры
 export const MAX_CARDS = 3; // Количество карточек для выбора

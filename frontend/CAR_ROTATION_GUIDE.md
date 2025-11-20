@@ -52,3 +52,4 @@ export const CAR_ROTATION_RIGHT = Math.PI; // местами
 
 После изменений игра автоматически перезагрузится!
 
+
